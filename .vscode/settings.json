@@ -1,0 +1,27 @@
+{
+    // 每次保存的时候将代码按格式进行修复
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    },
+    // 在使用搜索功能时，将这些文件夹/文件排除在外
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/target": true,
+        "**/logs": true,
+        "**/dist": true
+    },
+    // 这些文件将不会显示在工作空间中
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/*.js": {
+            "when": "$(basename).ts" //ts编译后生成的js文件将不会显示在工作空中
+        },
+        "**/node_modules": false
+    }
+}
