@@ -22,6 +22,6 @@
         "**/*.js": {
             "when": "$(basename).ts" //ts编译后生成的js文件将不会显示在工作空中
         },
-        "**/node_modules": false
+        "**/node_modules": true
     }
 }

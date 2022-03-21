@@ -64,7 +64,7 @@ class Bluetooth {
                 success: (res) => resolve(res),
                 // errno, errCode, errMsg
                 fail: (error) => {
-                    Bluetooth.factory(error.errCode as number)
+                    Bluetooth.factory(error.errCode as BluetoothCode)
                     reject(error)
                 }
             })
@@ -94,13 +94,32 @@ class Bluetooth {
         if (this.isOpen) uni.closeBluetoothAdapter({})
     }
 
-    static getConnectedBluetoothDevices() {}
+    static getConnectedBluetoothDevices(services: Array<string> = []) {
+        uni.getConnectedBluetoothDevices({
+            services,
+            success(res) {
+                console.log(res)
+            }
+        })
+    }
 
-    static getBluetoothDevices() {}
+    static getBluetoothDevices() {
+        uni.getBluetoothDevices({
+            success(res) {
+                console.log(res)
+            }
+        })
+    }
 
-    static getBluetoothAdapterState() {}
+    static getBluetoothAdapterState() {
+        uni.getBluetoothAdapterState({
+            success(res) {
+                console.log(res)
+            }
+        })
+    }
 
-    private static factory(code: number) {
+    private static factory(code: BluetoothCode) {
         switch (code) {
             case BluetoothCode.OK:
                 break
