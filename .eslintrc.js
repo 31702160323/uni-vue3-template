@@ -1,7 +1,7 @@
 module.exports = {
     env: {
         browser: true,
-        es2021: true,
+        es2022: true,
         node: true,
         'vue/setup-compiler-macros': true
     },
@@ -61,6 +61,10 @@ module.exports = {
         'func-names': 'off',
         'no-unused-vars': 'off',
         'no-shadow': 'off',
-        'no-bitwise': 'off'
+        'no-bitwise': 'off',
+        'no-plusplus': 'off',
+        'no-restricted-syntax': 'off',
+        'guard-for-in': 'off',
+        'class-methods-use-this': 'off'
     }
 }

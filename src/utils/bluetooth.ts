@@ -33,13 +33,8 @@ const enum BluetoothCode {
     INVALID_DATA = 10013
 }
 
-console.log('Bluetooth---------')
 class Bluetooth {
-    isOpen = false
-
     constructor() {
-        console.log('Bluetooth')
-
         uni.onBluetoothAdapterStateChange((res) => {
             uni.$emit('onBluetoothAdapterStateChange', res)
             uni.showToast({
@@ -49,52 +44,63 @@ class Bluetooth {
             })
         })
         uni.onBluetoothDeviceFound((devices) => {
+            console.log('5. 搜索成功, 目标设备为：', devices)
             uni.$emit('onBluetoothDeviceFound', devices)
         })
     }
 
     open(): Promise<any> {
-        if (this.isOpen) {
-            return new Promise((resolve) => {
-                resolve('aa')
-            })
-        }
         return new Promise((resolve, reject) => {
             uni.openBluetoothAdapter({
-                success: (res) => resolve(res),
+                success: (res) => {
+                    this.getBluetoothDevices()
+                    resolve(res)
+                },
                 // errno, errCode, errMsg
                 fail: (error) => {
                     Bluetooth.factory(error.errCode as BluetoothCode)
                     reject(error)
+                },
+                complete: () => {
+                    this.start()
                 }
             })
         })
     }
 
     start() {
-        if (this.isOpen)
-            uni.startBluetoothDevicesDiscovery({
-                services: ['FEE7'],
-                success(res) {
-                    console.log(res)
-                }
-            })
+        uni.startBluetoothDevicesDiscovery({
+            success: (res) => {
+                console.log('4. 开始查找设备', res)
+                // 30s 停止搜索
+                let timer = setTimeout(() => {
+                    this.stop()
+                    clearTimeout(timer)
+                    timer = 0
+                }, 30000)
+            },
+            fail(error) {
+                console.log('4.1-err', error)
+            }
+        })
     }
 
     stop() {
-        if (this.isOpen)
-            uni.stopBluetoothDevicesDiscovery({
-                success(res) {
-                    console.log(res)
-                }
-            })
+        uni.stopBluetoothDevicesDiscovery({
+            success(res) {
+                console.log('6. 蓝牙停止查找', res)
+            },
+            fail: (err) => {
+                console.log('6.1-err', err)
+            }
+        })
     }
 
     close() {
-        if (this.isOpen) uni.closeBluetoothAdapter({})
+        uni.closeBluetoothAdapter({})
     }
 
-    static getConnectedBluetoothDevices(services: Array<string> = []) {
+    getConnectedBluetoothDevices(services: Array<string> = []) {
         uni.getConnectedBluetoothDevices({
             services,
             success(res) {
@@ -103,7 +109,7 @@ class Bluetooth {
         })
     }
 
-    static getBluetoothDevices() {
+    getBluetoothDevices() {
         uni.getBluetoothDevices({
             success(res) {
                 console.log(res)
@@ -111,10 +117,13 @@ class Bluetooth {
         })
     }
 
-    static getBluetoothAdapterState() {
+    getBluetoothAdapterState() {
         uni.getBluetoothAdapterState({
             success(res) {
                 console.log(res)
+            },
+            fail(error) {
+                console.log('搜索蓝牙设备失败', error)
             }
         })
     }
@@ -122,28 +131,45 @@ class Bluetooth {
     private static factory(code: BluetoothCode) {
         switch (code) {
             case BluetoothCode.OK:
+                console.log(BluetoothCode.OK)
                 break
             case BluetoothCode.ALREADY_CONNECT:
+                console.log(BluetoothCode.ALREADY_CONNECT)
                 break
             case BluetoothCode.NOT_AVAILABLE:
+                console.log(BluetoothCode.NOT_AVAILABLE)
+                uni.showModal({
+                    title: '提示',
+                    content: '请打开蓝牙',
+                    showCancel: false
+                })
                 break
             case BluetoothCode.NO_DEVICE:
+                console.log(BluetoothCode.NO_DEVICE)
                 break
             case BluetoothCode.NO_SERVICE:
+                console.log(BluetoothCode.NO_SERVICE)
                 break
             case BluetoothCode.NO_CHARACTERISTIC:
+                console.log(BluetoothCode.NO_CHARACTERISTIC)
                 break
             case BluetoothCode.NO_CONNECTION:
+                console.log(BluetoothCode.NO_CONNECTION)
                 break
             case BluetoothCode.PROPERTY_NOT_SUPPORT:
+                console.log(BluetoothCode.PROPERTY_NOT_SUPPORT)
                 break
             case BluetoothCode.ALREADY_CONNECT_2:
+                console.log(BluetoothCode.ALREADY_CONNECT_2)
                 break
             case BluetoothCode.NEED_PIN:
+                console.log(BluetoothCode.NEED_PIN)
                 break
             case BluetoothCode.OPERATE_TIME_OUT:
+                console.log(BluetoothCode.OPERATE_TIME_OUT)
                 break
             case BluetoothCode.INVALID_DATA:
+                console.log(BluetoothCode.INVALID_DATA)
                 break
             default:
                 break

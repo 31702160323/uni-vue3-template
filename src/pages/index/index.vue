@@ -1,5 +1,9 @@
 <template>
     <view class="content">
+        <xzh-tabs v-model:current="current" :list="tabList"></xzh-tabs>
+        <view>
+            {{ current }}
+        </view>
         <image class="logo" src="/static/logo.png" @click="open" />
         <view class="text-area">
             <text class="title">{{ title }}</text>
@@ -9,43 +13,34 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import bluetooth from '@/utils/bluetooth'
+
+const current = ref(0)
+const tabList = ref(['首页', '发现', '我的'])
 
 const title = ref('Hello')
 
 const open = () => {
-    uni.openBluetoothAdapter({
-        success(res) {
-            console.log(res)
-        },
-        fail(error) {
-            console.log(error)
-        }
-    })
+    bluetooth.open()
 }
 </script>
 
 <style lang="scss">
 .content {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
-
 .logo {
-    height: 200rpx;
+    margin: 200rpx auto 50rpx;
     width: 200rpx;
-    margin-top: 200rpx;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 50rpx;
+    height: 200rpx;
 }
-
 .text-area {
     display: flex;
     justify-content: center;
 }
-
 .title {
     font-size: 36rpx;
     color: #8f8f94;

@@ -1,0 +1,19 @@
+function toggle(newValue, oldValue, ownerInstance, instance) {
+  var item = ownerInstance.selectAllComponents('.tabs-item')[newValue].getBoundingClientRect();
+  var instance = ownerInstance.selectComponent('.tabs-link');
+  var rect = instance.getBoundingClientRect();
+  instance.setStyle({
+    width: item.width * 0.6 + 'px',
+    left: item.left + ((item.width - rect.width) / 2) + 'px'
+  })
+  return false
+}
+
+function init(newValue, oldValue, ownerInstance, instance) {
+  toggle(0, 0, ownerInstance, instance);
+}
+
+module.exports = {
+  init: init,
+  toggle: toggle
+}
