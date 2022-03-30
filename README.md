@@ -1,9 +1,13 @@
 # uni-vue3-template
 
-## Project setup
-```
-npm install
-或
-yarn
-```
+## 初始化项目
 
+npm install 或 yarn
+
+## vscode 插件
+
+ESLint
+
+Prettier - Code formatter
+
+Stylelint

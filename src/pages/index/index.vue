@@ -13,7 +13,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+/* #ifdef APP-PLUS */
 import bluetooth from '@/utils/bluetooth'
+/* #endif */
 
 const current = ref(0)
 const tabList = ref(['首页', '发现', '我的'])
@@ -21,7 +23,9 @@ const tabList = ref(['首页', '发现', '我的'])
 const title = ref('Hello')
 
 const open = () => {
+    /* #ifdef APP-PLUS */
     bluetooth.open()
+    /* #endif */
 }
 </script>
 
@@ -41,6 +45,7 @@ const open = () => {
     display: flex;
     justify-content: center;
 }
+
 .title {
     font-size: 36rpx;
     color: #8f8f94;

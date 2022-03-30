@@ -1,12 +1,14 @@
 module.exports = {
     root: true,
-    plugins: ['stylelint-order'],
+    plugins: ['stylelint-scss', 'stylelint-order'],
     customSyntax: 'postcss-html',
     extends: [
         'stylelint-config-standard',
         'stylelint-config-standard-scss',
-        'stylelint-config-recommended-vue/scss',
-        'stylelint-config-prettier'
+        // 'stylelint-config-recommended-vue/scss',
+        // 'stylelint-config-recess-order'
+        // 'stylelint-config-prettier'
+        'stylelint-config-rational-order'
     ],
     rules: {
         // 使用4格缩进

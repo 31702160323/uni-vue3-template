@@ -17,14 +17,6 @@ function parse(string: string) {
     return obj
 }
 
-/** 读取环境变量文件 */
-export function getEnvConfig(mode: string) {
-    const local = `./env/.env.local${mode ? `.${mode}` : ''}`
-    const path = fs.existsSync(local) ? local : `./env/.env${mode ? `.${mode}` : ''}` // 判断根目录中是否存在 local 文件并优先使用
-    const content = fs.readFileSync(path, 'utf-8')
-    return parse(content)
-}
-
 export function replaceManifest(object: Record<string, string>) {
     const manifestPath = './src/manifest.json'
     const Manifest = fs.readFileSync(manifestPath, { encoding: 'utf-8' })

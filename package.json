@@ -30,6 +30,8 @@
         "build:quickapp-webview": "uni build -p quickapp-webview",
         "build:quickapp-webview-huawei": "uni build -p quickapp-webview-huawei",
         "build:quickapp-webview-union": "uni build -p quickapp-webview-union",
+        "lint:eslint": "eslint --cache --max-warnings 0  \"{src,mock}/**/*.{vue,ts,tsx}\" --fix",
+        "lint:prettier": "prettier --write  \"src/**/*.{js,json,tsx,css,less,scss,vue,html,md}\"",
         "lint:stylelint": "stylelint --cache --fix \"**/*.{vue,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/"
     },
     "dependencies": {
@@ -64,42 +66,10 @@
         "eslint-plugin-import": "^2.25.4",
         "eslint-plugin-prettier": "^4.0.0",
         "eslint-plugin-vue": "^8.5.0",
-        "postcss": "^8.4.12",
-        "postcss-html": "^1.3.0",
         "prettier": "^2.6.0",
         "sass": "^1.49.9",
         "sass-loader": "^12.6.0",
-        "stylelint": "^14.6.0",
-        "stylelint-config-prettier": "^9.0.3",
-        "stylelint-config-recommended-vue": "^1.3.0",
-        "stylelint-config-standard": "^25.0.0",
-        "stylelint-config-standard-scss": "^3.0.0",
-        "stylelint-order": "^5.0.0",
         "typescript": "^4.6.2",
         "vite": "^2.8.6"
-    },
-    "lint-staged": {
-        "*.{js,jsx,ts,tsx}": [
-            "eslint --fix",
-            "prettier --write"
-        ],
-        "{!(package)*.json,*.code-snippets,.!(browserslist)*rc}": [
-            "prettier --write--parser json"
-        ],
-        "package.json": [
-            "prettier --write"
-        ],
-        "*.vue": [
-            "eslint --fix",
-            "prettier --write",
-            "stylelint --fix"
-        ],
-        "*.{scss,less,styl,html}": [
-            "stylelint --fix",
-            "prettier --write"
-        ],
-        "*.md": [
-            "prettier --write"
-        ]
     }
 }

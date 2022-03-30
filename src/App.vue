@@ -11,11 +11,3 @@ onHide(() => {
     console.log('App Hide')
 })
 </script>
-<style>
-.a,
-.b {
-    width: 122rpx;
-    height: 100%;
-    background: '#FFFFFF';
-}
-</style>
