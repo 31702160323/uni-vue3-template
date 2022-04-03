@@ -4,11 +4,10 @@ module.exports = {
     customSyntax: 'postcss-html',
     extends: [
         'stylelint-config-standard',
-        // 'stylelint-config-standard-scss',
-        // 'stylelint-config-recommended-vue/scss',
-        // 'stylelint-config-recess-order'
+        'stylelint-config-html/vue',
+        'stylelint-config-standard-scss',
+        'stylelint-config-recommended-vue/scss',
         'stylelint-config-prettier'
-        // 'stylelint-config-rational-order'
     ],
     rules: {
         // 使用4格缩进

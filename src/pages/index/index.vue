@@ -29,7 +29,7 @@ const open = () => {
 }
 </script>
 
-<style lang="scss">
+<style>
 .content {
     display: flex;
     justify-content: center;
@@ -37,15 +37,14 @@ const open = () => {
     flex-direction: column;
 }
 .logo {
-    margin: 200rpx auto 50rpx;
     width: 200rpx;
     height: 200rpx;
+    margin: 200rpx auto 50rpx;
 }
 .text-area {
     display: flex;
     justify-content: center;
 }
-
 .title {
     font-size: 36rpx;
     color: #8f8f94;
