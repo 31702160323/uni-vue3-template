@@ -1,23 +1,22 @@
 module.exports = {
+    root: true,
     env: {
         browser: true,
         es2022: true,
-        node: true,
-        'vue/setup-compiler-macros': true
+        node: true
     },
     extends: [
         'eslint:recommended',
+        'plugin:@typescript-eslint/recommended',
         'plugin:vue/vue3-recommended',
-        'airbnb-base',
-        // 一定要放在最后一项
-        'plugin:prettier/recommended'
+        'prettier'
     ],
     parserOptions: {
         ecmaVersion: 'latest',
         parser: '@typescript-eslint/parser',
         sourceType: 'module'
     },
-    plugins: ['vue', '@typescript-eslint'],
+    plugins: ['vue', '@typescript-eslint', 'prettier', 'import'],
     settings: {
         'import/resolver': {
             alias: {
@@ -53,10 +52,6 @@ module.exports = {
                 ts: 'never',
                 tsx: 'never'
             }
-        ],
-        'import/no-extraneous-dependencies': [
-            'error',
-            { devDependencies: true }
         ],
         'import/prefer-default-export': 'off',
         'no-console': 'off',

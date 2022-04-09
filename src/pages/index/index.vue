@@ -1,32 +1,34 @@
 <template>
-    <page-theme class="content">
-        <xzh-tabs v-model:current="current" :list="tabList"></xzh-tabs>
+    <view class="content page-theme" :data-theme="themeColor">
+        <xzh-tabs v-model:current="current" :list="tabList" />
         <view>
             {{ current }}
         </view>
         <image class="logo" src="/static/logo.png" @click="open" />
         <view class="text-area">
-            <text class="title">{{ t('index.title') }}</text>
+            <text class="title">
+                {{ t('index.title') }}
+            </text>
         </view>
-        <button @click="setTheme">切换主题色</button>
-    </page-theme>
+        <button @click="setTheme(themeColor === '' ? 'dark' : '')">
+            切换主题色
+        </button>
+    </view>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { Locale } from '@/locale/type'
+import useTheme from '@/hooks/useTheme'
 /* #ifdef APP-PLUS */
 import bluetooth from '@/utils/bluetooth'
 /* #endif */
 
-const store = useStore()
 const { t } = useI18n()
+const { themeColor, setTheme } = useTheme()
 const current = ref(0)
 const tabList = ref(['首页', '发现', '我的'])
-
-const title = ref('Hello')
 
 const open = () => {
     /* #ifdef APP-PLUS */
@@ -34,10 +36,6 @@ const open = () => {
     /* #endif */
 
     uni.setLocale(uni.getLocale() === Locale.en ? Locale.zh_Hans : Locale.en)
-}
-
-const setTheme = () => {
-    store.commit('theme/setTheme', 'dark')
 }
 </script>
 

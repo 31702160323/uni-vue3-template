@@ -1,10 +1,10 @@
-/* stylelint-disable-next-line selector-type-no-unknown */
+/* stylelint-disable selector-type-no-unknown */
 page {
     --theme-color: #fff;
     --text-color: #000;
 }
 
-.page-theme[data-theme='dark'] {
+page .page-theme[data-theme='dark'] {
     --theme-color: #000;
     --text-color: #fff;
 }
