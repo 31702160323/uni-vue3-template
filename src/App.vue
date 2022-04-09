@@ -11,3 +11,7 @@ onHide(() => {
     console.log('App Hide')
 })
 </script>
+
+<style>
+@import url('@/common/theme.css');
+</style>

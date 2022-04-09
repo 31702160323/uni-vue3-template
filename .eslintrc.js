@@ -36,7 +36,7 @@ module.exports = {
             'error',
             {
                 trailingComma: 'none',
-                printWidth: 100,
+                printWidth: 80,
                 tabWidth: 4,
                 semi: false,
                 singleQuote: true,
@@ -54,7 +54,10 @@ module.exports = {
                 tsx: 'never'
             }
         ],
-        'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+        'import/no-extraneous-dependencies': [
+            'error',
+            { devDependencies: true }
+        ],
         'import/prefer-default-export': 'off',
         'no-console': 'off',
         'no-undef': 'off',

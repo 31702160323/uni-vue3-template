@@ -3,10 +3,14 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-        "source.fixAll": true
+        "source.fixAll": true,
+        "source.fixAll.stylelint": true
     },
+    "css.validate": false,
+    "less.validate": false,
+    "scss.validate": false,
     "stylelint.enable": true,
-    "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass"],
+    "stylelint.validate": ["css", "less", "postcss", "scss", "vue"],
 
     // 在使用搜索功能时，将这些文件夹/文件排除在外
     "search.exclude": {

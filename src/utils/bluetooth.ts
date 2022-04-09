@@ -73,10 +73,9 @@ class Bluetooth {
             success: (res) => {
                 console.log('4. 开始查找设备', res)
                 // 30s 停止搜索
-                let timer = setTimeout(() => {
+                const timer = setTimeout(() => {
                     this.stop()
                     clearTimeout(timer)
-                    timer = 0
                 }, 30000)
             },
             fail(error) {

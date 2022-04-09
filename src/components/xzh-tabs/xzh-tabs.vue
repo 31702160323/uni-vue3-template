@@ -1,14 +1,18 @@
 <template>
     <view class="tabs" :change:init="tab.init" :init="isInit">
         <view
-            v-for="(item, index) in list"
+            v-for="(item, index) in props.list"
             :key="item"
             class="tabs-item"
             @click="emit('update:current', index)"
         >
             {{ item }}
         </view>
-        <view class="tabs-link" :change:prop="tab.toggle" :prop="current"></view>
+        <view
+            class="tabs-link"
+            :change:prop="tab.toggle"
+            :prop="current"
+        ></view>
     </view>
 </template>
 
@@ -18,16 +22,10 @@
 import { ref, onMounted } from 'vue'
 
 const isInit = ref(-1)
-const props = defineProps({
-    current: {
-        type: Number,
-        default: 0
-    },
-    list: {
-        type: Array,
-        default: () => []
-    }
-})
+const props = defineProps<{
+    current: number
+    list: string[]
+}>()
 const emit = defineEmits(['update:current'])
 
 /* #ifdef H5 */
@@ -37,19 +35,22 @@ onMounted(() => {
 /* #endif */
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .tabs {
     position: relative;
     display: flex;
-    justify-content: center;
-    align-items: center;
     width: 750rpx;
     height: 80rpx;
+    justify-content: center;
+    align-items: center;
 }
+
 .tabs-item {
-    flex: 1;
+    color: var(--text-color);
     text-align: center;
+    flex: 1;
 }
+
 .tabs-link {
     position: absolute;
     bottom: 0;

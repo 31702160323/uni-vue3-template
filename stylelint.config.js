@@ -1,12 +1,10 @@
 module.exports = {
     root: true,
     plugins: ['stylelint-order'],
-    customSyntax: 'postcss-html',
     extends: [
         'stylelint-config-standard',
-        'stylelint-config-html/vue',
         'stylelint-config-standard-scss',
-        'stylelint-config-recommended-vue/scss',
+        'stylelint-config-standard-vue/scss',
         'stylelint-config-prettier'
     ],
     rules: {
@@ -27,7 +25,7 @@ module.exports = {
         'at-rule-name-case': 'lower', // 指定@规则名的大小写
         'length-zero-no-unit': true, // 禁止零长度的单位（可自动修复）
         'shorthand-property-no-redundant-values': true, // 简写属性
-        'number-leading-zero': 'never', // 小数不带0
+        'number-leading-zero': 'always', // 小数不带0
         'declaration-block-no-duplicate-properties': true, // 禁止声明快重复属性
         'no-descending-specificity': true, // 禁止在具有较高优先级的选择器后出现被其覆盖的较低优先级的选择器。
         'selector-max-id': 0, // 限制一个选择器中 ID 选择器的数量
@@ -114,23 +112,12 @@ module.exports = {
     ignoreFiles: ['**/*.js', '**/*.jsx', '**/*.tsx', '**/*.ts'],
     overrides: [
         {
-            files: ['*.vue', '**/*.vue', '*.html', '**/*.html'],
-            extends: ['stylelint-config-recommended', 'stylelint-config-html'],
-            rules: {
-                'keyframes-name-pattern': null,
-                'selector-pseudo-class-no-unknown': [
-                    true,
-                    {
-                        ignorePseudoClasses: ['deep', 'global']
-                    }
-                ],
-                'selector-pseudo-element-no-unknown': [
-                    true,
-                    {
-                        ignorePseudoElements: ['v-deep', 'v-global', 'v-slotted']
-                    }
-                ]
-            }
+            files: ['**/*.scss'],
+            customSyntax: 'postcss-scss'
+        },
+        {
+            files: ['**/*.vue'],
+            customSyntax: 'postcss-html'
         }
     ]
 }
