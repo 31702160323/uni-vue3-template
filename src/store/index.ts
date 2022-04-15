@@ -4,7 +4,7 @@ import { createStore } from 'vuex'
 const files = import.meta.globEager('./modules/*.ts') // vite的写法
 const keys = Object.keys(files)
 
-const modules: any = {}
+const modules: Record<string, object> = {}
 
 keys.forEach((key) => {
     if (Object.prototype.hasOwnProperty.call(files, key)) {

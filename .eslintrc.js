@@ -43,16 +43,16 @@ module.exports = {
             }
         ],
         // 解决vite+airbnb导致eslint报错import/extensions
-        'import/extensions': [
-            'error',
-            'ignorePackages',
-            {
-                js: 'never',
-                jsx: 'never',
-                ts: 'never',
-                tsx: 'never'
-            }
-        ],
+        // 'import/extensions': [
+        //     'error',
+        //     'ignorePackages',
+        //     {
+        //         js: 'never',
+        //         jsx: 'never',
+        //         ts: 'never',
+        //         tsx: 'never'
+        //     }
+        // ],
         'import/prefer-default-export': 'off',
         'no-console': 'off',
         'no-undef': 'off',

@@ -12,7 +12,8 @@ export default defineConfig(({ command, mode }) => {
 
     const object: Record<string, string> = {}
     if (config.VITE_APP_ID) object.appid = `"${config.VITE_APP_ID}"`
-    if (config.VITE_WEIXIN_APP_ID) object['mp-weixin.appid'] = `"${config.VITE_WEIXIN_APP_ID}"`
+    if (config.VITE_WEIXIN_APP_ID)
+        object['mp-weixin.appid'] = `"${config.VITE_WEIXIN_APP_ID}"`
 
     // 动态修改 manifest.json
     replaceManifest(object)

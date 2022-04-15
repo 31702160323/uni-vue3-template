@@ -3,7 +3,7 @@ import { Locale } from './type'
 
 const files = import.meta.globEager('./*.json')
 
-const messages: Record<string, any> = {}
+const messages = {}
 
 for (const key in files) {
     if (
@@ -24,6 +24,6 @@ uni.onLocaleChange((e) => {
 })
 
 // 延迟初始化国际化，避免小程序端有问题
-setTimeout(() => uni.setLocale(uni.getLocale()))
+setTimeout(() => uni.setLocale(Locale.zh_Hans))
 
 export default i18n
