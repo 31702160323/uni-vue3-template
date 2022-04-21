@@ -23,7 +23,4 @@ uni.onLocaleChange((e) => {
     i18n.global.locale = e.locale || Locale.zh_Hans
 })
 
-// 延迟初始化国际化，避免小程序端有问题
-setTimeout(() => uni.setLocale(Locale.zh_Hans))
-
 export default i18n
