@@ -1,12 +1,12 @@
 import { computed } from 'vue'
-import { useStore } from 'vuex'
+import { useThemeStore } from '@/store/theme'
 
 export default function useTheme() {
-    const store = useStore()
-    const themeColor = computed(() => store.state.theme.themeColor)
+    const store = useThemeStore()
+    const themeColor = computed(() => store.themeColor)
 
     const setTheme = (theme: string) => {
-        store.commit('theme/setTheme', theme)
+        store.setTheme(theme)
     }
 
     return {
