@@ -1,5 +1,5 @@
 import { createI18n } from 'vue-i18n'
-import { Locale } from './type'
+import { Locale } from './types'
 
 const files = import.meta.globEager('./*.json')
 
@@ -15,7 +15,7 @@ for (const key in files) {
 }
 
 const i18n = createI18n({
-    locale: uni.getLocale(), // 获取已设置的语言
+    locale: uni.getLocale() in Locale ? uni.getLocale() : Locale.zh_Hans, // 获取已设置的语言
     messages
 })
 

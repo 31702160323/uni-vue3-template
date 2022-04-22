@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Locale } from '@/locale/type'
+import { Locale } from '@/locale/types'
 import useTheme from '@/hooks/useTheme'
 /* #ifdef APP-PLUS */
 import bluetooth from '@/utils/bluetooth'

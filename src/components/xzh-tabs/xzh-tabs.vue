@@ -1,5 +1,10 @@
 <template>
-    <view class="tabs" :change:init="tab.init" :init="isInit">
+    <view
+        v-if="isInit >= 0"
+        class="tabs"
+        :change:init="tab.init"
+        :init="isInit"
+    >
         <view
             v-for="(item, index) in props.list"
             :key="item"
@@ -21,25 +26,23 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-const isInit = ref(-1)
 const props = defineProps<{
     current: number
     list: string[]
 }>()
 const emit = defineEmits(['update:current'])
 
-/* #ifdef H5 */
+const isInit = ref(-1)
 onMounted(() => {
     isInit.value = 0
 })
-/* #endif */
 </script>
 
 <style scoped>
 .tabs {
     position: relative;
     display: flex;
-    width: 750rpx;
+    width: 100vw;
     height: 80rpx;
     justify-content: center;
     align-items: center;
