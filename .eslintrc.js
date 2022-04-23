@@ -63,6 +63,7 @@ module.exports = {
         'no-plusplus': 'off',
         'no-restricted-syntax': 'off',
         'guard-for-in': 'off',
-        'class-methods-use-this': 'off'
+        'class-methods-use-this': 'off',
+        '@typescript-eslint/no-explicit-any': 'off'
     }
 }
