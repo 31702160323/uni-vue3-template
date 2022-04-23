@@ -1,10 +1,5 @@
 <template>
-    <view
-        v-if="isInit >= 0"
-        class="tabs"
-        :change:init="tab.init"
-        :init="isInit"
-    >
+    <view class="tabs">
         <view
             v-for="(item, index) in props.list"
             :key="item"
@@ -14,9 +9,12 @@
             {{ item }}
         </view>
         <view
+            v-if="isInit >= 0"
             class="tabs-link"
-            :change:prop="tab.toggle"
+            :init="isInit"
             :prop="current"
+            :change:init="tab.init"
+            :change:prop="tab.toggle"
         ></view>
     </view>
 </template>
