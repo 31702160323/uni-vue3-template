@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+
+<body>
+  <script type="text/javascript" src="./js/uni.webview.1.5.3.js"></script>
+  <script type="text/javascript">
+    var worker = (function () {
+      let messageQueue = [];
+
+      // 创建事件
+      const event = document.createEvent('Event');
+      // 定义事件名为'WorkerJSBridgeReady'.
+      event.initEvent('WorkerJSBridgeReady', true, false);
+      // 触发对象可以是任何元素或其他事件目标
+      document.dispatchEvent(event);
+
+      return {
+        postMessage: (message) => {
+          uni && uni.postMessage({
+            data: message
+          })
+        },
+        plusMessage: (args) => {
+          setTimeout(() => {
+            for (let index = 0, len = messageQueue.length; index < len; index++) {
+              messageQueue[index](args);
+            }
+          })
+        },
+        onMessage: (callback) => {
+          messageQueue.push(callback)
+        }
+      }
+    })();
+  </script>
+</body>
+
+</html>

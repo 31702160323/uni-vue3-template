@@ -19,23 +19,23 @@
 <script lang="ts">
 export default {
     name: 'IndexPage'
-}
+};
 </script>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { Locale } from '@/locale/types'
-import useTheme from '@/hooks/useTheme'
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { Locale } from '@/locale/types';
+import useTheme from '@/hooks/useTheme';
 
-const { t } = useI18n()
-const { themeColor, setTheme } = useTheme()
-const current = ref(0)
-const tabList = ref(['首页', '发现', '我的'])
+const { t } = useI18n();
+const { themeColor, setTheme } = useTheme();
+const current = ref(0);
+const tabList = ref(['首页', '发现', '我的']);
 
 const open = () => {
-    uni.setLocale(uni.getLocale() === Locale.en ? Locale.zh_Hans : Locale.en)
-}
+    uni.setLocale(uni.getLocale() === Locale.en ? Locale.zh_Hans : Locale.en);
+};
 </script>
 
 <style>

@@ -37,7 +37,7 @@ module.exports = {
                 trailingComma: 'none',
                 printWidth: 80,
                 tabWidth: 4,
-                semi: false,
+                semi: true,
                 singleQuote: true,
                 endOfLine: 'auto'
             }
@@ -66,4 +66,4 @@ module.exports = {
         'class-methods-use-this': 'off',
         '@typescript-eslint/no-explicit-any': 'off'
     }
-}
+};

@@ -22,18 +22,18 @@
 <script module="tab" lang="wxs" src="./xzh-tabs.wxs"></script>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue';
 
 const props = defineProps<{
-    current: number
-    list: string[]
-}>()
-const emit = defineEmits(['update:current'])
+    current: number;
+    list: string[];
+}>();
+const emit = defineEmits(['update:current']);
 
-const isInit = ref(-1)
+const isInit = ref(-1);
 onMounted(() => {
-    isInit.value = 0
-})
+    isInit.value = 0;
+});
 </script>
 
 <style scoped>
