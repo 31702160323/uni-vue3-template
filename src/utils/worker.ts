@@ -1,6 +1,7 @@
 let worker: PlusWebviewWebviewObject | null;
-type MessageCallback = (message: any) => void;
-let messageQueue: MessageCallback[] = [];
+type WorkerCallback = (message?: any) => void;
+const killQueue: WorkerCallback[] = [];
+let messageQueue: WorkerCallback[] = [];
 
 plus['globalEvent'].addEventListener('plusMessage', (e: any) => {
     if (worker && worker['__uuid__'] === e.originId) {
@@ -13,12 +14,17 @@ plus['globalEvent'].addEventListener('plusMessage', (e: any) => {
 
 export const createWorker = (url: string) => {
     if (!worker) {
-        worker = plus.webview.create('/hybrid/html/index.html', '__worker__', {
-            plusrequire: 'none',
-            width: '0px',
-            height: '0px',
-            'uni-app': 'none'
-        });
+        worker = plus.webview.create(
+            '/static/app/hybrid/html/index.html',
+            '__worker__',
+            {
+                opacity: 0,
+                width: '0px',
+                height: '0px',
+                blockNetworkImage: true,
+                webviewBGTransparent: true
+            }
+        );
         worker.setBlockNetworkImage(true);
         worker.setContentVisible(false);
         worker.setVisible(false);
@@ -40,6 +46,9 @@ export const createWorker = (url: string) => {
         });
         worker.addEventListener('close', (res) => {
             console.log('worker关闭', res);
+            for (let index = 0, len = killQueue.length; index < len; index++) {
+                killQueue[index]();
+            }
             terminate();
         });
 
@@ -49,8 +58,12 @@ export const createWorker = (url: string) => {
     }
 };
 
-export const onMessage = (callback: MessageCallback) => {
+export const onMessage = (callback: WorkerCallback) => {
     messageQueue.push(callback);
+};
+
+export const onProcessKilled = (callback: WorkerCallback) => {
+    killQueue.push(callback);
 };
 
 export const postMessage = (message: any) => {

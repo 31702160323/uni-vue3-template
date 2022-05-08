@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app';
-import { addShortcuts } from '@/utils/shortcuts';
 
 /* #ifdef APP-PLUS */
+import { addShortcuts } from '@/utils/shortcuts';
 if (uni.getSystemInfoSync().platform == 'android') {
     //添加 Shortcuts 方法
     addShortcuts([

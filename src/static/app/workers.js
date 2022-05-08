@@ -4,7 +4,7 @@ console.log('加载js文件');
 if (window.worker) {
   workerJSBridgeReady()
 } else {
-  document.addEventListener('WorkerJSBridgeReady', workerJSBridgeReady(), false);
+  document.addEventListener('WorkerJSBridgeReady', workerJSBridgeReady, false);
 }
 
 function workerJSBridgeReady() {

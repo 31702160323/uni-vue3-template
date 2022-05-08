@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv } from 'vite';
 import uni from '@dcloudio/vite-plugin-uni';
+import copy from 'rollup-plugin-copy';
 import { resolve } from 'path';
 import { replaceManifest } from './env/utils';
 
@@ -18,9 +19,23 @@ export default defineConfig(({ command, mode }) => {
     // 动态修改 manifest.json
     replaceManifest(object);
 
+    const plugins = [
+        uni(),
+        copy({
+            targets: [
+                {
+                    src: 'src/cloudfunctions/**/*',
+                    dest: `dist/${
+                        process.env.NODE_ENV === 'production' ? 'build' : 'dev'
+                    }/${process.env.UNI_PLATFORM}/cloudfunctions`
+                }
+            ]
+        })
+    ];
+
     return {
         envDir: resolve(__dirname, 'env'),
-        plugins: [uni()],
+        plugins: plugins,
         resolve: {
             // 配置别名
             alias: {
