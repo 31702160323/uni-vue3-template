@@ -1,11 +1,15 @@
 import { defineConfig, loadEnv } from 'vite';
 import uni from '@dcloudio/vite-plugin-uni';
+import WindiCSS from 'vite-plugin-windicss';
+import MiniProgramTailwind from '@dcasia/mini-program-tailwind-webpack-plugin/rollup';
 import copy from 'rollup-plugin-copy';
 import { resolve } from 'path';
 import { replaceManifest } from './env/utils';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
+    console.log(command);
+
     /** 解析后环境变量 */
     const config = loadEnv(mode, './env');
 
@@ -21,6 +25,8 @@ export default defineConfig(({ command, mode }) => {
 
     const plugins = [
         uni(),
+        WindiCSS(),
+        MiniProgramTailwind(),
         copy({
             targets: [
                 {
@@ -43,11 +49,12 @@ export default defineConfig(({ command, mode }) => {
             }
         },
         build: {
+            minify: 'terser',
             terserOptions: {
                 compress: {
                     // 生产环境清除console
-                    drop_console: true,
-                    drop_debugger: true
+                    drop_console: process.env.NODE_ENV === 'production',
+                    drop_debugger: process.env.NODE_ENV === 'production'
                 }
             }
         }

@@ -1,6 +1,7 @@
 import { createSSRApp } from 'vue';
 import * as Pinia from 'pinia';
 import App from './App.vue';
+import 'virtual:windi.css';
 import i18n from './locale';
 
 export function createApp() {

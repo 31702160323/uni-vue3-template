@@ -13,6 +13,9 @@
         <button @click="setTheme(themeColor === '' ? 'dark' : '')">
             切换主题色
         </button>
+        <view class="h-[100rpx] bg-red-500 text-center" @click="toPage">
+            你好，世界！
+        </view>
     </view>
 </template>
 
@@ -35,6 +38,12 @@ const tabList = ref(['首页', '发现', '我的']);
 
 const open = () => {
     uni.setLocale(uni.getLocale() === Locale.en ? Locale.zh_Hans : Locale.en);
+};
+
+const toPage = () => {
+    uni.navigateTo({
+        url: '/pages/echarts/echarts'
+    });
 };
 </script>
 
