@@ -11,6 +11,12 @@
             "style": {
                 "navigationBarTitleText": "echarts"
             }
+        },
+        {
+            "path": "pages/resize/resize",
+            "style": {
+                "navigationBarTitleText": "resize"
+            }
         }
     ],
     "globalStyle": {

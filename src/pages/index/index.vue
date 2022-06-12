@@ -13,7 +13,10 @@
         <button @click="setTheme(themeColor === '' ? 'dark' : '')">
             切换主题色
         </button>
-        <view class="h-[100rpx] bg-red-500 text-center" @click="toPage">
+        <view
+            class="w-[350rpx] h-[100rpx] flex items-center justify-center text-white bg-red-500"
+            @click="toPage"
+        >
             你好，世界！
         </view>
     </view>
@@ -42,7 +45,7 @@ const open = () => {
 
 const toPage = () => {
     uni.navigateTo({
-        url: '/pages/echarts/echarts'
+        url: '/pages/resize/resize'
     });
 };
 </script>
