@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app';
+import { route } from '@/router/index';
+
+console.log(route);
 
 /* #ifdef APP-PLUS */
 import { addShortcuts } from '@/utils/shortcuts';
@@ -29,5 +32,5 @@ onHide(() => {
 </script>
 
 <style>
-@import url('@/common/theme.css');
+@import '@/common/theme.css';
 </style>

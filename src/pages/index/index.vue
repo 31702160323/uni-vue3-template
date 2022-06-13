@@ -33,6 +33,9 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Locale } from '@/locale/types';
 import useTheme from '@/hooks/useTheme';
+import { route } from '@/router/index';
+
+console.log(route);
 
 const { t } = useI18n();
 const { themeColor, setTheme } = useTheme();

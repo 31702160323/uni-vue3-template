@@ -1,21 +1,43 @@
 <template>
-    <view>
-        <view class="row">
-            <view class="col">
-                <view class="col-item col-item-1">1</view>
-                <view class="col-item col-item-1">2</view>
-                <view class="col-item col-item-1">3</view>
+    <view class="m-[-2.5rpx]">
+        <view
+            class="flex flex-col text-white gap-[5rpx] landscape:h-[calc(100vh-var(--window-top))] landscape:bg-red-400 portrait:bg-blue-400"
+        >
+            <view class="row">
+                <view class="grid-item flex-1 portrait:h-[150rpx]"> 1 </view>
+                <view class="grid-item flex-1 portrait:h-[150rpx]"> 2 </view>
+                <view class="grid-item flex-1 portrait:h-[150rpx]"> 3 </view>
             </view>
-            <view class="col">
-                <view class="col-item col-item-2">4</view>
-                <view class="col-item col-item-2">5</view>
-                <view class="col-item col-item-2">6</view>
-                <view class="col-item col-item-2">7</view>
+            <view class="row">
+                <view
+                    class="grid-item landscape:flex-1 portrait:w-[calc(50vw-2.5rpx)] portrait:h-[200rpx]"
+                >
+                    4
+                </view>
+                <view
+                    class="grid-item landscape:flex-1 portrait:w-[calc(50vw-2.5rpx)] portrait:h-[200rpx]"
+                >
+                    5
+                </view>
+                <view
+                    class="grid-item landscape:flex-1 portrait:w-[calc(50vw-2.5rpx)] portrait:h-[200rpx]"
+                >
+                    6
+                </view>
+                <view
+                    class="grid-item landscape:flex-1 portrait:w-[calc(50vw-2.5rpx)] portrait:h-[200rpx]"
+                >
+                    7
+                </view>
             </view>
-            <view class="col">
-                <view class="col-item col-item-3">8</view>
-                <view class="col-item col-item-3">9</view>
-                <view class="col-item col-item-3-2">10</view>
+            <view class="row">
+                <view class="grid-item flex-1 portrait:h-[250rpx]"> 8 </view>
+                <view class="grid-item flex-1 portrait:h-[250rpx]"> 9 </view>
+                <view
+                    class="grid-item landscape:flex-[2] portrait:w-[750rpx] portrait:h-[250rpx]"
+                >
+                    10
+                </view>
             </view>
         </view>
     </view>
@@ -33,75 +55,11 @@ view {
 }
 
 .row {
-    display: flex;
-    color: white;
-    flex-direction: column;
-    gap: 5rpx;
+    @apply flex-1 flex flex-wrap justify-between;
 }
 
-.col {
-    flex: 1;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 5rpx;
-}
-
-.col-item {
-    display: flex;
-    flex-direction: column;
-    border: 1rpx solid gray;
-    align-items: center;
-    justify-content: center;
-}
-
-.col-item-3 {
-    flex: 1;
-}
-
-/* 横屏 */
-@media all and (orientation: landscape) {
-    .row {
-        height: calc(100vh - var(--window-top));
-        background: red;
-    }
-
-    .col-item-1 {
-        flex: 1;
-    }
-
-    .col-item-2 {
-        flex: 1;
-    }
-
-    .col-item-3-2 {
-        flex: 2;
-    }
-}
-
-/* 竖屏 */
-@media all and (orientation: portrait) {
-    .row {
-        background: blue;
-    }
-
-    .col-item-1 {
-        flex: 1;
-        height: 150rpx;
-    }
-
-    .col-item-2 {
-        width: calc(50% - 2.5rpx);
-        height: 200rpx;
-    }
-
-    .col-item-3 {
-        height: 250rpx;
-    }
-
-    .col-item-3-2 {
-        width: 750rpx;
-        height: 250rpx;
-    }
+.grid-item {
+    margin: 2.5rpx;
+    @apply flex flex-col items-center justify-center border border-solid border-gray-400;
 }
 </style>
