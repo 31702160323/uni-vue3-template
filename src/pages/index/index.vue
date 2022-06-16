@@ -14,7 +14,7 @@
             切换主题色
         </button>
         <view
-            class="w-[350rpx] h-[100rpx] flex items-center justify-center text-white bg-red-500"
+            class="w-[50%] h-[100rpx] flex items-center justify-center text-white bg-red-500"
             @click="toPage"
         >
             你好，世界！

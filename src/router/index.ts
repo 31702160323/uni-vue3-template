@@ -22,9 +22,9 @@ class UniRoute {
             uni.addInterceptor(name, {
                 invoke: (opts) => {
                     console.log('invoke', opts);
-                    this.beforeHooks.forEach((callback: beforeCallback) => {
-                        callback(opts);
-                    });
+                    for (const callback of this.beforeHooks) {
+                        return callback(opts);
+                    }
                 },
                 success: (res) => {
                     console.log('success', res);
