@@ -5,7 +5,7 @@ import { route } from '@/router/index';
 console.log(route);
 
 /* #ifdef APP-PLUS */
-import { addShortcuts } from '@/utils/shortcuts';
+import { addShortcuts, setWindowGray } from '@/utils/shortcuts';
 if (uni.getSystemInfoSync().platform == 'android') {
     //添加 Shortcuts 方法
     addShortcuts([
@@ -17,6 +17,8 @@ if (uni.getSystemInfoSync().platform == 'android') {
             title: '系统设置'
         }
     ]);
+	
+	setWindowGray()
 }
 /* #endif */
 

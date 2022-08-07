@@ -118,6 +118,10 @@ module.exports = {
         {
             files: ['**/*.vue'],
             customSyntax: 'postcss-html'
+        },
+        {
+            files: ['**/*.nvue'],
+            customSyntax: 'postcss-html'
         }
     ]
 };

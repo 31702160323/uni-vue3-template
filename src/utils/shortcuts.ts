@@ -101,3 +101,31 @@ export function removeAll(): boolean {
     }
     return false;
 }
+
+
+// android.view.View;
+// android.graphics.ColorFilter;
+// android.graphics.ColorMatrix;
+// android.graphics.ColorMatrixColorFilter;
+// android.graphics.Paint;
+// Paint paint = new Paint();
+// ColorMatrix colorMatrix = new ColorMatrix();
+// colorMatrix.setSaturation(0.0F);
+// paint.setColorFilter((ColorFilter)new ColorMatrixColorFilter(colorMatrix));
+// ((Activity) context).getWindow().getDecorView().setLayerType(View.LAYER_TYPE_HARDWARE, paint);
+export function setWindowGray() {
+	const colorMatrix = newObject("android.graphics.ColorMatrix")
+	invoke(colorMatrix, "setSaturation", 0)
+	const paint = newObject("android.graphics.Paint")
+	const colorFilter = newObject("android.graphics.ColorMatrixColorFilter", colorMatrix)
+	invoke(paint, "setColorFilter", colorFilter)
+	const window = invoke(plus.android.runtimeMainActivity(), "getWindow");
+	const decorView = invoke(window, "getDecorView")
+	invoke(decorView, "setLayerType", 2, paint)
+	
+	plus.android.autoCollection(colorMatrix);
+	plus.android.autoCollection(paint);
+	plus.android.autoCollection(colorFilter);
+	plus.android.autoCollection(window);
+	plus.android.autoCollection(decorView);
+}

@@ -16,7 +16,7 @@ module.exports = {
         parser: '@typescript-eslint/parser',
         sourceType: 'module'
     },
-    plugins: ['vue', '@typescript-eslint', 'prettier', 'import'],
+    plugins: ['vue', '@typescript-eslint', 'prettier', 'import', 'html'],
     settings: {
         'import/resolver': {
             alias: {

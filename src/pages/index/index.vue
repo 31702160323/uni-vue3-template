@@ -14,10 +14,16 @@
             切换主题色
         </button>
         <view
-            class="w-[50%] h-[100rpx] flex items-center justify-center text-white bg-red-500"
-            @click="toPage"
+            class="w-[375rpx] h-[100rpx] flex items-center justify-center text-white bg-red-500"
+            @click="toPage('/pages/resize/resize')"
         >
             你好，世界！
+        </view>
+        <view
+            class="w-[375rpx] h-[100rpx] flex items-center justify-center text-white bg-red-500"
+            @click="toPage('/pages/echarts/echarts')"
+        >
+            echarts
         </view>
     </view>
 </template>
@@ -46,9 +52,9 @@ const open = () => {
     uni.setLocale(uni.getLocale() === Locale.en ? Locale.zh_Hans : Locale.en);
 };
 
-const toPage = () => {
+const toPage = (url: string) => {
     uni.navigateTo({
-        url: '/pages/resize/resize'
+        url
     });
 };
 </script>

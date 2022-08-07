@@ -15,12 +15,13 @@ for (const key in files) {
 }
 
 const i18n = createI18n({
+    legacy: false,
     locale: uni.getLocale() in Locale ? uni.getLocale() : Locale.zh_Hans, // 获取已设置的语言
     messages
 });
 
 uni.onLocaleChange((e) => {
-    i18n.global.locale = e.locale || Locale.zh_Hans;
+    i18n.global.locale.value = e.locale || Locale.zh_Hans;
 });
 
 export default i18n;
