@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 // #ifndef APP-NVUE
 // 计算版本
 export function compareVersion(v1, v2) {
@@ -25,12 +24,12 @@ export function compareVersion(v1, v2) {
 }
 
 export function wrapTouch(event) {
-	for (let i = 0; i < event.touches.length; ++i) {
-		const touch = event.touches[i];
-		touch.offsetX = touch.x;
-		touch.offsetY = touch.y;
-	}
-	return event;
+  for (let i = 0; i < event.touches.length; ++i) {
+    const touch = event.touches[i];
+    touch.offsetX = touch.x;
+    touch.offsetY = touch.y;
+  }
+  return event;
 }
 export const devicePixelRatio = wx.getSystemInfoSync().pixelRatio
 // #endif
@@ -45,12 +44,12 @@ export function base64ToPath(base64) {
 			}
 			const time = new Date().getTime();
 			const filePath = `_doc/uniapp_temp/${time}.${format}`
-
-			bitmap.save(filePath, {},
+			
+			bitmap.save(filePath, {}, 
 				() => {
 					bitmap.clear()
 					resolve(filePath)
-				},
+				}, 
 				(error) => {
 					bitmap.clear()
 					console.error(`${JSON.stringify(error)}`)
@@ -64,3 +63,12 @@ export function base64ToPath(base64) {
 	})
 }
 // #endif
+
+
+export function sleep(time) {
+	return new Promise((resolve) => {
+		setTimeout(() => {
+			resolve(true)
+		},time)
+	})
+}

@@ -10,10 +10,11 @@
         "resolveJsonModule": true,
         "esModuleInterop": true,
         "lib": ["esnext", "dom"],
-        "suppressImplicitAnyIndexErrors": true,
+        // "suppressImplicitAnyIndexErrors": true,
         "types": [
             "@dcloudio/types",
             "uni-base-components-types",
+            "./src/uni_modules/xzh-WindowSaturation/js_sdk/",
             "./src/types",
             "./src/types/",
             "./env"
@@ -28,6 +29,7 @@
         "src/**/*.d.ts",
         "src/**/*.tsx",
         "src/**/*.vue",
-        "src/**/*.nvue"
+        "src/**/*.nvue",
+        "src/**/*.uts"
     ]
 }

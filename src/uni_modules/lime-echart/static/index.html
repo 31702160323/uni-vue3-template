@@ -68,13 +68,17 @@
 				}
 				return null
 			}
-			function init(callback, options) {
+			function init(callback, options, opts = {}, theme = null) {
 				if(!chart) {
-					chart = echarts.init(document.getElementById('limeChart'))
-					const name = parse('a', callback, options)
-					if(name) this[name] = options
-					eval(`a = ${callback};`)
-					if(a) {a(chart)}
+					chart = echarts.init(document.getElementById('limeChart'), theme, opts)
+					if(options) {
+						chart.setOption(options)
+					}
+					// const name = parse('a', callback, options)
+					// console.log('options::', callback)
+					// if(name) this[name] = options
+					// eval(`a = ${callback};`)
+					// if(a) {a(chart)}
 				}
 			}
 			
@@ -91,8 +95,8 @@
 			function setOption(data) {
 				if (chart) chart.setOption(data[0], data[1])
 			}
-			function showLoading() {
-				if (chart) chart.showLoading()
+			function showLoading(data) {
+				if (chart) chart.showLoading(data[0], data[1])
 			}
 			
 			function hideLoading() {
@@ -106,6 +110,9 @@
 			
 			function dispose() {
 				if (chart) chart.dispose()
+			}
+			function resize(size) {
+				if (chart) chart.resize(size)
 			}
 			
 			function canvasToTempFilePath(opt = {}) {

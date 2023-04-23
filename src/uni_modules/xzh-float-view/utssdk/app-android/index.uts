@@ -1,0 +1,181 @@
+// 引用uts环境库
+import { UTSAndroid } from "io.dcloud.uts";
+// 引用android api
+import View from "android.view.View"
+import Gravity from "android.view.Gravity";
+import MotionEvent from "android.view.MotionEvent"
+import OnClickListener from "android.view.View.OnClickListener"
+import OnTouchListener from "android.view.View.OnTouchListener"
+import WindowManager from "android.view.WindowManager"
+import LayoutParams from "android.view.WindowManager.LayoutParams"
+import Toast from "android.widget.Toast";
+import TextView from "android.widget.TextView";
+import FrameLayout from "android.widget.FrameLayout";
+import Color from "android.graphics.Color";
+import Paint from "android.graphics.Paint";
+import Canvas from "android.graphics.Canvas";
+import PixelFormat from "android.graphics.PixelFormat"
+import Runnable from 'java.lang.Runnable';
+import Context from 'android.content.Context';
+import AttributeSet from 'android.util.AttributeSet';
+		
+class FloatViewClickListener extends OnClickListener {
+	override onClick(view: View): void {
+		Toast.makeText(UTSAndroid.getUniActivity()!, "点击", Toast.LENGTH_SHORT).show()
+	}
+}
+
+class FloatViewTouchListener extends OnTouchListener {
+	private x = 0;
+	private y = 0;
+	private px = 0;
+	private py = 0;
+	private floatLp: WindowManager.LayoutParams;
+	private windowManager: WindowManager;
+	
+	constructor(windowManager: WindowManager, floatLp: WindowManager.LayoutParams) {
+		super();
+		this.windowManager = windowManager;
+		this.floatLp = floatLp
+	}
+	
+	override onTouch(view: View, event: MotionEvent): boolean {
+		switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				this.x = this.floatLp.x;
+				this.y = this.floatLp.y;
+				this.px = event.getRawX().toInt();
+				this.py = event.getRawY().toInt();
+				break;
+			case MotionEvent.ACTION_MOVE:
+				this.floatLp.x = ((this.x + event.getRawX().toInt()) - this.px);
+				this.floatLp.y = ((this.y + event.getRawY().toInt()) - this.py);
+				this.windowManager.updateViewLayout(view, this.floatLp);
+				break;
+		}
+		return false;
+	}
+}
+
+class FloatViewUtils {
+	private constructor() {}
+	
+	private static readonly instance = new FloatViewUtils();
+	
+	static getInstance(): FloatViewUtils {
+		return FloatViewUtils.instance
+	}
+	
+	private floatView?: TView = null;
+	
+	addView() {
+		if(this.floatView !== null) return;
+		ThreadUtils.runOnUiThread(() => {
+			const context = UTSAndroid.getUniActivity()!;
+			
+			const windowManager = context.getSystemService("window") as WindowManager
+			
+			const floatLp = new WindowManager.LayoutParams(
+				FrameLayout.LayoutParams.WRAP_CONTENT,
+				FrameLayout.LayoutParams.WRAP_CONTENT,
+				// 全局
+				// WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+				// 应用内
+				WindowManager.LayoutParams.FIRST_SUB_WINDOW,
+				WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+				PixelFormat.TRANSLUCENT
+			)
+			
+			this.floatView = new TView(context)
+			this.floatView!.setText("HELLO WORLD");
+			this.floatView!.setTextSize(12.0.toFloat());
+			this.floatView!.setBackgroundColor(Color.RED)
+			this.floatView!.setTag("helloText")
+			this.floatView!.setGravity(Gravity.CENTER)
+			this.floatView!.setWidth(250)
+			this.floatView!.setHeight(250)
+			
+			floatLp.gravity = Gravity.CENTER;
+			
+			this.floatView!.setOnClickListener(new FloatViewClickListener())
+			
+			this.floatView!.setOnTouchListener(new FloatViewTouchListener(windowManager, floatLp));
+			windowManager.addView(this.floatView!, floatLp);
+		})
+	}
+	
+	removeView() {
+		if(this.floatView === null) return;
+		const context = UTSAndroid.getUniActivity()!;
+		const windowManager = context.getSystemService("window") as WindowManager
+		windowManager.removeView(this.floatView!)
+		this.floatView = null;
+	}
+}
+
+type ThreadCallback = () => void
+class ThreadUtils extends Runnable {
+	static runOnUiThread(callback: ThreadCallback) {
+		UTSAndroid.getUniActivity()!.runOnUiThread(new ThreadUtils(callback))
+	}
+	
+	private callback: ThreadCallback
+	private constructor(callback: ThreadCallback) {
+		super()
+		this.callback = callback
+	}
+	
+	override run():void {
+		this.callback()
+	}
+}
+
+export function addView() {
+	FloatViewUtils.getInstance().addView()
+}
+
+export function removeView() {
+	FloatViewUtils.getInstance().removeView()
+}
+
+class TView extends TextView {
+	private mPaint?:Paint = null;
+	
+	// constructor(context: Context);
+	// constructor(context: Context, attrs: AttributeSet);
+	// constructor(context: Context, attrs: AttributeSet, defStyleAttr: number);
+	// constructor(context: Context, attrs: AttributeSet, defStyleAttr: number, defStyleRes: number);
+	// constructor(context: Context, attrs?: AttributeSet, defStyleAttr?: number, defStyleRes?: number) {
+	// 	if(defStyleRes !== null) {
+	// 		super(context, attrs, defStyleAttr, defStyleRes)
+	// 	} else if(defStyleAttr !== null) {
+	// 		super(context, attrs, defStyleAttr)
+	// 	} else if(attrs !== null) {
+	// 		super(context, attrs)
+	// 	} else {
+	// 		super(context)
+	// 	}
+	// 	this.init();
+	// }
+	constructor(context: Context) {
+		super(context)
+		this.init();
+	}
+	
+	private init() {
+		this.mPaint = new Paint();
+		this.mPaint!.setColor(Color.BLACK);
+	}
+	
+	override onDraw(canvas: Canvas) {
+		super.onDraw(canvas);
+		const width = this.getWidth();
+		const height = this.getHeight();
+		//绘制中心曲线，起点坐标（0,height/2），终点坐标（width,height/2）
+		this.mPaint!.setStrokeWidth(5.0.toFloat());
+		canvas.drawLine(0.0.toFloat(), height/2.0.toFloat(), width.toFloat(), height/2.0.toFloat(), this.mPaint!);
+		canvas.drawLine(width/2.0.toFloat(), 0.0.toFloat(), width/2.0.toFloat(), height.toFloat(), this.mPaint!);
+		canvas.drawLine(0.0.toFloat(), 0.0.toFloat(), width.toFloat(), height.toFloat(), this.mPaint!);
+		canvas.drawLine(width.toFloat(), 0.0.toFloat(), 0.0.toFloat(), height.toFloat(), this.mPaint!);
+	}
+}

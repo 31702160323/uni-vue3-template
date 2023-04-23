@@ -113,9 +113,9 @@ export function removeAll(): boolean {
 // colorMatrix.setSaturation(0.0F);
 // paint.setColorFilter((ColorFilter)new ColorMatrixColorFilter(colorMatrix));
 // ((Activity) context).getWindow().getDecorView().setLayerType(View.LAYER_TYPE_HARDWARE, paint);
-export function setWindowGray() {
+export function setWindowGray(sat: number = 1) {
 	const colorMatrix = newObject("android.graphics.ColorMatrix")
-	invoke(colorMatrix, "setSaturation", 0)
+	invoke(colorMatrix, "setSaturation", sat)
 	const paint = newObject("android.graphics.Paint")
 	const colorFilter = newObject("android.graphics.ColorMatrixColorFilter", colorMatrix)
 	invoke(paint, "setColorFilter", colorFilter)

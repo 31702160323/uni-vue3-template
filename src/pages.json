@@ -17,7 +17,21 @@
             "style": {
                 "navigationBarTitleText": "resize"
             }
+        },
+        /* #ifdef APP-PLUS */
+        {
+            "path": "pages/netspeed/netspeed",
+            "style": {
+                "navigationBarTitleText": "netspeed"
+            }
+        },
+        {
+            "path": "pages/floatView/floatView",
+            "style": {
+                "navigationBarTitleText": "floatView"
+            }
         }
+        /* #endif */
     ],
     "globalStyle": {
         "navigationBarTextStyle": "black",

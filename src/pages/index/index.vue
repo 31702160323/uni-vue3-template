@@ -1,49 +1,60 @@
 <template>
     <view class="content page-theme" :data-theme="themeColor">
         <xzh-tabs v-model:current="current" :list="tabList" />
-        <view>
-            {{ current }}
-        </view>
-        <image class="logo" src="/static/logo.png" @click="open" />
-        <view class="text-area">
-            <text class="title">
-                {{ t('index.title') }}
-            </text>
-        </view>
-        <button @click="setTheme(themeColor === '' ? 'dark' : '')">
-            切换主题色
-        </button>
         <view
-            class="w-[375rpx] h-[100rpx] flex items-center justify-center text-white bg-red-500"
+            class="my-1 w-4/5 h-[100rpx] leading-[100rpx] text-center border border-black border-solid"
+              @click="open" 
+        >
+            切换语言
+        </view>
+        <view
+            class="my-1 w-4/5 h-[100rpx] leading-[100rpx] text-center border border-black border-solid"
+             @click="setTheme(themeColor === '' ? 'dark' : '')"
+        >
+            切换主题色
+        </view>
+        <view
+            class="my-1 w-4/5 h-[100rpx] leading-[100rpx] text-center border border-black border-solid"
             @click="toPage('/pages/resize/resize')"
         >
             你好，世界！
         </view>
         <view
-            class="w-[375rpx] h-[100rpx] flex items-center justify-center text-white bg-red-500"
+            class="my-1 w-4/5 h-[100rpx] leading-[100rpx] text-center border border-black border-solid"
             @click="toPage('/pages/echarts/echarts')"
         >
             echarts
         </view>
+        <!-- #ifdef APP-PLUS -->
+        <view
+            class="my-1 w-4/5 h-[100rpx] leading-[100rpx] text-center border border-black border-solid"
+             @click="setSat"
+        >
+            切换黑白
+        </view>
+        <view
+            class="my-1 w-4/5 h-[100rpx] leading-[100rpx] text-center border border-black border-solid"
+             @click="toPage('/pages/netspeed/netspeed')"
+        >
+            netspeed
+        </view>
+        <view
+            class="my-1 w-4/5 h-[100rpx] leading-[100rpx] text-center border border-black border-solid"
+             @click="toPage('/pages/floatView/floatView')"
+        >
+            floatView
+        </view>
+        <!-- #endif -->
     </view>
 </template>
 
-<script lang="ts">
-export default {
-    name: 'IndexPage'
-};
-</script>
-
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { Locale } from '@/locale/types';
 import useTheme from '@/hooks/useTheme';
-import { route } from '@/router/index';
+import { setWindowSaturation } from '@/uni_modules/xzh-WindowSaturation/js_sdk/index'
 
-console.log(route);
-
-const { t } = useI18n();
+const sat = ref(1);
 const { themeColor, setTheme } = useTheme();
 const current = ref(0);
 const tabList = ref(['首页', '发现', '我的']);
@@ -57,6 +68,11 @@ const toPage = (url: string) => {
         url
     });
 };
+
+function setSat() {
+	sat.value = !!sat.value ? 0 : 1
+	setWindowSaturation(sat.value)
+}
 </script>
 
 <style>

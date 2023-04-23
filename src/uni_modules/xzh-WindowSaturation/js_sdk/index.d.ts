@@ -1,0 +1,1 @@
+export function setWindowSaturation(sat?: number): void

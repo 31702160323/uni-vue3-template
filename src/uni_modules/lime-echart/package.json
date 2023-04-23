@@ -1,7 +1,7 @@
 {
   "id": "lime-echart",
   "displayName": "百度图表 echarts",
-  "version": "0.4.1",
+  "version": "0.6.5",
   "description": "echarts 全端兼容，一款使echarts图表能跑在uniapp各端中的插件",
   "keywords": [
     "echarts",
@@ -11,13 +11,9 @@
 ],
   "repository": "https://gitee.com/liangei/lime-echart",
   "engines": {
-    "HBuilderX": "^3.4.9"
+    "HBuilderX": "^3.6.4"
   },
-  "dcloudext": {
-    "category": [
-        "前端组件",
-        "通用组件"
-    ],
+"dcloudext": {
     "sale": {
       "regular": {
         "price": "0.00"
@@ -34,7 +30,8 @@
       "data": "无",
       "permissions": "无"
     },
-    "npmurl": ""
+    "npmurl": "",
+    "type": "component-vue"
   },
   "uni_modules": {
     "dependencies": [],
@@ -56,11 +53,11 @@
           "QQ浏览器(Android)": "y"
         },
         "H5-pc": {
-          "Chrome": "y",
+          "Chrome": "u",
           "IE": "u",
           "Edge": "u",
           "Firefox": "u",
-          "Safari": "y"
+          "Safari": "u"
         },
         "小程序": {
           "微信": "y",
@@ -71,8 +68,7 @@
         "钉钉": "u",
         "快手": "u",
         "飞书": "u",
-        "京东": "u",
-        "小红书": "u"
+        "京东": "u"
         },
         "快应用": {
           "华为": "u",

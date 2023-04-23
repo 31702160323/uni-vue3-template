@@ -1,41 +1,46 @@
-const UNI_ROUTE_ACTIONS = [
-    'navigateTo',
-    'redirectTo',
-    'reLaunch',
-    'switchTab',
-    'navigateBack'
-];
+type RouteActions =
+    | 'navigateTo'
+    | 'redirectTo'
+    | 'reLaunch'
+    | 'switchTab'
+    | 'navigateBack';
 
-type beforeCallback = (opts: any) => void;
-type afterCallback = (res: any) => void;
-type errorCallback = (error: any) => void;
-
-class UniRoute {
+type beforeCallback = (opts: CallbackRes) => boolean;
+type afterCallback = (res: CallbackRes) => void;
+type errorCallback = (error: CallbackRes) => void;
+interface CallbackRes {
+    readonly name: string;
+    readonly [key: string]: any;
+}
+export class UniRoute {
     private beforeHooks = new Array<beforeCallback>();
     private afterHooks = new Array<afterCallback>();
     private errorCbs = new Array<errorCallback>();
+    private static UNI_ROUTE_ACTIONS: RouteActions[] = [
+        'navigateTo',
+        'redirectTo',
+        'reLaunch',
+        'switchTab',
+        'navigateBack'
+    ];
 
     constructor() {
-        console.log('----');
-
-        UNI_ROUTE_ACTIONS.forEach((name) => {
+        UniRoute.UNI_ROUTE_ACTIONS.forEach((name) => {
             uni.addInterceptor(name, {
                 invoke: (opts) => {
-                    console.log('invoke', opts);
                     for (const callback of this.beforeHooks) {
-                        return callback(opts);
+                        const is = callback({ name, ...opts });
+                        return is;
                     }
                 },
                 success: (res) => {
-                    console.log('success', res);
                     this.afterHooks.forEach((callback: afterCallback) => {
-                        callback(res);
+                        callback({ name, ...res });
                     });
                 },
                 fail: (error) => {
-                    console.log('fail', error);
                     this.errorCbs.forEach((callback: errorCallback) => {
-                        callback(error);
+                        callback({ name, ...error });
                     });
                 }
             });
@@ -82,5 +87,3 @@ const registerHook = function <T>(list: T[], callback: T) {
         if (index !== -1) list.splice(index, 1);
     };
 };
-
-export const route = new UniRoute();

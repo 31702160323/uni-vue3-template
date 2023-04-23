@@ -11,32 +11,47 @@
 
 
 ## 安装
-- 1、在uniapp 插件市场 找到 [百度图表](https://ext.dcloud.net.cn/plugin?id=4899) 导入
-- 2、安装 echarts
+- 第一步、在uniapp 插件市场 找到 [百度图表](https://ext.dcloud.net.cn/plugin?id=4899) 导入
+- 第二步、安装 echarts 或者直接使用插件内的echarts.min文件
 ```cmd
 pnpm add echarts
  -or-
 npm install echarts
 ```
 
+
 **注意** 
 * 🔔 必须使用hbuilderx 3.4.8-alpha及以上
 * 🔔 echarts 5.3.0及以上
+* 🔔 如果是 `cli` 项目需要主动 `import` 插件
+```js
+import LEchart from '@/uni_modules/lime-echart/components/l-echart/l-echart.vue';
+export default {
+	components: {LEchart}
+}
+```
 
 ## 代码演示
 ### 基础用法
 ```html
-<view style="width: 100%; height:500rpx"><l-echart ref="chart"></l-echart></view>
+<view><l-echart ref="chart" @finished="init"></l-echart></view>
 ```
 
 ```js
+// 如果你使用插件内提供的echarts.min
+// 也可以自行去官网下载自定义覆盖
+// 这种方式仅限于vue2
+import * as echarts from '@/uni_modules/lime-echart/static/echarts.min'
+//---or----------------------------------
+
+// 如果你使用 npm 安装了 echarts --------- 使用以下方式
 // 引入全量包
 import * as echarts from 'echarts'
 //---or----------------------------------
 
-// 或者按需引入 
+// 按需引入 开始
 import * as echarts from 'echarts/core';
-import {LineChart, barChart} from 'echarts/charts';
+import {LineChart, BarChart} from 'echarts/charts';
 import {TitleComponent,TooltipComponent,GridComponent, DatasetComponent, TransformComponent, LegendComponent } from 'echarts/components';
 // 标签自动布局，全局过渡动画等特性
 import {LabelLayout,UniversalTransition} from 'echarts/features';
@@ -52,12 +67,14 @@ echarts.use([
 	DatasetComponent,
 	TransformComponent,
 	LineChart,
-	barChart,
+	BarChart,
 	LabelLayout,
 	UniversalTransition,
 	CanvasRenderer
 ]);
-//-------------------------------------
+//-------------按需引入结束------------------------
+
+
 export default {
 	data() {
 		return {
@@ -146,11 +163,27 @@ export default {
 			},
 		};
 	},
+	// 组件能被调用必须是组件的节点已经被渲染到页面上
+	// 1、在页面mounted里调用，有时候mounted 组件也未必渲染完成
 	mounted() {
-		// 把 echarts 传入 
+		// init(echarts, theme?:string, opts?:{}, chart => {})
+		// echarts 必填， 非nvue必填，nvue不用填
+		// theme 可选，应用的主题，目前只支持名称，如：'dark'
+		// opts = { // 可选
+		//	locale?: string  // 从 `5.0.0` 开始支持
+		// }
+		// chart => {} ， callback 必填，返回图表实例
 		this.$refs.chart.init(echarts, chart => {
 			chart.setOption(this.option);
 		});
+	},
+	// 2、或者使用组件的finished事件里调用
+	methods: {
+		init() {
+			this.$refs.chart.init(echarts, chart => {
+				chart.setOption(this.option);
+			});
+		}
 	}
 }
 ```
@@ -162,11 +195,23 @@ export default {
 this.$refs.chart.setOption(data)
 ```
 
+## 图表大小
+- 在有些场景下，我们希望当容器大小改变时，图表的大小也相应地改变。
+
+```js
+// 默认获取容器尺寸
+this.$refs.chart.resize()
+// 指定尺寸
+this.$refs.chart.resize({width: 375, height: 375})
+```
+
 
 ## 常见问题
-- 微信小程序 `2d` 不支持 真机调试
-- `toolbox` 不支持
+- 微信小程序 `2d` 只支持 真机调试2.0
+- 微信开发工具会出现canvas不跟随页面的情况，真机不影响
+- toolbox 不支持 `saveImage`
 - echarts 5.3.0 的 lines 不支持 trailLength，故需设置为 `0`
+- dataZoom H5不要设置 `showDetail` 
 
 
 ## Props
@@ -174,11 +219,10 @@ this.$refs.chart.setOption(data)
 | 参数             | 说明                                                            | 类型             | 默认值        | 版本 	|
 | ---------------  | --------                                                        | -------         | ------------ | ----- 	|
 | custom-style     | 自定义样式                                                      |   `string`       | -            | -     	|
-| type             | 指定 canvas 类型                                 |    `string`      | `2d`         |   	    |
-| is-clickable     | 是否派发点击事件                                                 |    `boolean`     | `true`     |   	    |
+| type             | 指定 canvas 类型                                				 |    `string`      | `2d`         |   	    |
 | is-disable-scroll | 触摸图表时是否禁止页面滚动                                       |    `boolean`     | `false`     |   	    |
-| is-clickable     | 是否派发点击事件                                                 |    `boolean`     | `true`     |   	    |
-| hybrid           |  设置 nvue 是否使用 hybird 目录下文件                             |    `boolean`     | `false`     |   	    |
+| beforeDelay       |  延迟初始化 (毫秒)                       						|    `number`     | `30`     |   	    |
+| enableHover       |  PC端使用鼠标悬浮                       						|    `boolean`     | `false`     |   	    |
 
 ## 事件
 
