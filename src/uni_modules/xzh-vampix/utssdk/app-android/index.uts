@@ -1,0 +1,19 @@
+import { UTSAndroid } from "io.dcloud.uts";
+import View from 'android.view.View'
+// import Window from 'android.view.Window'
+import ColorMatrix from 'android.graphics.ColorMatrix'
+import ColorMatrixColorFilter from 'android.graphics.ColorMatrixColorFilter'
+import Paint from 'android.graphics.Paint'
+
+import { ThreadUtils } from './utils.uts'
+
+export function setWindowSaturation(sat: Number) {
+	ThreadUtils.runOnUiThread(function() {
+		const cm = new ColorMatrix();
+		cm.setSaturation(sat.toFloat());
+		const paint = new Paint();
+		paint.setColorFilter(new ColorMatrixColorFilter(cm));
+		const decorView = UTSAndroid.getUniActivity()!.window!.decorView;
+		decorView.setLayerType(View.LAYER_TYPE_HARDWARE, paint);
+	});
+}

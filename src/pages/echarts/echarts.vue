@@ -139,12 +139,12 @@ const option = {
 
 const chart = ref();
 onMounted(() => {
-    nextTick(() => {
+    setTimeout(() => {
         console.log(chart.value);
 
         chart.value.init(echarts, (c: any) => {
             c.setOption(option);
         });
-    });
+    }, 500);
 });
 </script>

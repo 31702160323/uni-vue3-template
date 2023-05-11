@@ -61,10 +61,11 @@ global = {}
 // #endif
 // #ifndef APP-NVUE
 import {Canvas, setCanvasCreator, dispatch} from './canvas';
-import { compareVersion, wrapTouch, devicePixelRatio ,sleep} from './utils';
+import {wrapTouch, devicePixelRatio ,sleep, canIUseCanvas2d, getRect} from './utils';
 // #endif
 // #ifdef APP-NVUE
 import { base64ToPath, sleep } from './utils';
+import {Echarts} from './nvue'
 // #endif
 const charts = {}
 const echartsObj = {}
@@ -137,7 +138,7 @@ export default {
 		this.dispose()
 		// #ifdef H5
 		if(this.isPc) {
-			document.removeEventListener('mousewheel')
+			document.removeEventListener('mousewheel', this.mousewheel)
 		}
 		// #endif
 	},
@@ -145,29 +146,14 @@ export default {
 		// #ifdef H5
 		if(!('ontouchstart' in window)) {
 			this.isPc = true
-			document.addEventListener('mousewheel', (e) => {
-				if(this.chart) {
-					const touch = this.getTouch(e)
-					const handler = this.chart.getZr().handler;
-					dispatch.call(handler, 'mousewheel', touch)
-				}
-			})
+			document.addEventListener('mousewheel', this.mousewheel)
 		}
 		// #endif
 		// #ifdef MP-WEIXIN || MP-TOUTIAO || MP-ALIPAY
-		const { SDKVersion, version, platform, environment } = uni.getSystemInfoSync();
-		// #endif
-		// #ifdef MP-WEIXIN
+		const { platform } = uni.getSystemInfoSync();
 		this.isPC = /windows/i.test(platform)
-		this.use2dCanvas = this.type === '2d' && compareVersion(SDKVersion, '2.9.2') >= 0 && !((/ios/i.test(platform) && /7.0.20/.test(version)) || /wxwork/i.test(environment)) && !this.isPC;
 		// #endif
-		// #ifdef MP-TOUTIAO
-		this.isPC = /devtools/i.test(platform)
-		this.use2dCanvas = this.type === '2d' && compareVersion(SDKVersion, '1.78.0') >= 0;
-		// #endif
-		// #ifdef MP-ALIPAY
-		this.use2dCanvas = this.type === '2d' && compareVersion(my.SDKVersion, '2.7.0') >= 0;
-		// #endif
+		this.use2dCanvas = this.type === '2d' && canIUseCanvas2d()
 	},
 	mounted() {
 		this.$nextTick(() => {
@@ -202,7 +188,7 @@ export default {
 			}
 			// #ifdef APP-NVUE
 			if(typeof callback === 'function') {
-				this.$refs.webview.evalJs(`setChart(${JSON.stringify(callback.toString())}, ${JSON.stringify(this.roptions)})`);
+				this.$refs.webview.evalJs(`setChart(${JSON.stringify(callback.toString())}, ${JSON.stringify(this.chart.options)})`);
 			}
 			// #endif
 		},
@@ -211,51 +197,26 @@ export default {
 				console.warn(`组件还未初始化，请先使用 init`)
 				return
 			}
-			// #ifndef APP-NVUE
 			this.chart.setOption(...arguments);
-			// #endif
-			// #ifdef APP-NVUE
-			this.$refs.webview.evalJs(`setOption(${JSON.stringify(arguments)})`);
-			// #endif
 		},
 		showLoading() {
 			if(this.chart) {
-				// #ifndef APP-NVUE
 				this.chart.showLoading(...arguments)
-				// #endif
-				// #ifdef APP-NVUE
-				this.$refs.webview.evalJs(`showLoading(${JSON.stringify(arguments)})`);
-				// #endif
 			}
 		},
 		hideLoading() {
 			if(this.chart) {
-				// #ifndef APP-NVUE
 				this.chart.hideLoading()
-				// #endif
-				// #ifdef APP-NVUE
-				this.$refs.webview.evalJs(`hideLoading()`);
-				// #endif
 			}
 		},
 		clear() {
 			if(this.chart) {
-				// #ifndef APP-NVUE
 				this.chart.clear()
-				// #endif
-				// #ifdef APP-NVUE
-				this.$refs.webview.evalJs(`clear()`);
-				// #endif
 			}
 		},
 		dispose() {
 			if(this.chart) {
-				// #ifndef APP-NVUE
 				this.chart.dispose()
-				// #endif
-				// #ifdef APP-NVUE
-				this.$refs.webview.evalJs(`dispose()`);
-				// #endif
 			}
 		},
 		resize(size) {
@@ -263,12 +224,8 @@ export default {
 				this.height = size.height
 				this.width = size.width
 				if(this.chart) {this.chart.resize(size)}
-				// #ifdef APP-NVUE
-				this.$refs.webview.evalJs(`resize(${size})`);
-				// #endif
 			} else {
 				this.$nextTick(() => {
-					// #ifndef APP-NVUE
 					uni.createSelectorQuery()
 						.in(this)
 						.select(`.lime-echart`)
@@ -281,10 +238,6 @@ export default {
 								this.chart.resize({width, height})
 							}
 						});
-					// #endif
-					// #ifdef APP-NVUE
-					this.$refs.webview.evalJs(`resize()`);
-					// #endif
 				})
 				
 			}
@@ -322,15 +275,9 @@ export default {
 			// #endif
 		},
 		async init(echarts, ...args) {
-			// #ifdef APP-NVUE
-			if(arguments && !arguments.length) {
-				console.error('缺少参数：init(theme?:string, opts?: object, callback: function)')
-				return
-			}
-			// #endif
 			// #ifndef APP-NVUE
-			if(arguments && arguments.length < 2) {
-				console.error('缺少参数：init(echarts, theme?:string, opts?: object, callback: function)')
+			if(arguments && arguments.length < 1) {
+				console.error('缺少参数：init(echarts, theme?:string, opts?: object, callback?: function)')
 				return
 			}
 			// #endif
@@ -353,25 +300,21 @@ export default {
 			}
 			let config = await this.getContext();
 			// #ifndef APP-NVUE
+			setCanvasCreator(echarts, config)
+			this.chart = echarts.init(config.canvas, theme, Object.assign({}, config, opts))
 			if(typeof callback === 'function') {
-				setCanvasCreator(echarts, config)
-				this.chart = echarts.init(config.canvas, theme, Object.assign({}, config, opts))
 				callback(this.chart)
 			} else {
-				console.error('callback 非 function')
+				return this.chart
 			}
 			// #endif
 			// #ifdef APP-NVUE
+			this.chart = new Echarts(this.$refs.webview)
+			this.$refs.webview.evalJs(`init(null, null, ${JSON.stringify(opts)}, ${theme})`)
 			if(callback) {
-				this.chart = {
-					setOption: (options) => {
-						this.roptions = options
-					}
-				}
 				callback(this.chart)
-				this.$refs.webview.evalJs(`init(${JSON.stringify(callback.toString())}, ${JSON.stringify(this.roptions)}, ${JSON.stringify(opts)}, ${theme})`)
 			} else {
-				console.error('callback 非 function')
+				return this.chart
 			}
 			// #endif
 		},
@@ -389,56 +332,38 @@ export default {
 			})
 			// #endif
 			// #ifndef APP-NVUE
-			const { use2dCanvas} = this;
-			let dpr = devicePixelRatio
-			if (use2dCanvas) {
-				return new Promise(resolve => {
-					uni.createSelectorQuery()
-						.in(this)
-						.select(`#${this.canvasId}`)
-						.fields({
-							node: true,
-							size: true
-						})
-						.exec(res => {
-							let { node, width, height } = res[0];
-							this.width = width = width || 300;
-							this.height = height = height || 300;
-							const ctx = node.getContext('2d');
-							const canvas = new Canvas(ctx, this, true, node);
-							this.canvasNode = node
-							resolve({ canvas, width, height, devicePixelRatio: dpr, node });
-						});
-				});
-			}
-			return new Promise(resolve => {
-				uni.createSelectorQuery()
-					.in(this)
-					.select(`#${this.canvasId}`)
-					.boundingClientRect()
-					.exec(res => {
-						if (res) {
-							let { width, height } = res[0];
-							this.width = width = width || 300;
-							this.height = height = height || 300;
-							// #ifdef MP-TOUTIAO
-							dpr = !this.isPC ? devicePixelRatio : 1// 1.25
-							// #endif
-							// #ifndef MP-ALIPAY || MP-TOUTIAO
-							dpr = this.isPC ? devicePixelRatio : 1
-							// #endif
-							// #ifdef MP-ALIPAY || MP-LARK
-							dpr = devicePixelRatio
-							// #endif
-							this.rect = res[0]
-							this.nodeWidth = width * dpr;
-							this.nodeHeight = height * dpr;
-							const ctx = uni.createCanvasContext(this.canvasId, this);
-							const canvas =  new Canvas(ctx, this, false);
-							resolve({ canvas, width, height, devicePixelRatio: dpr });
-						}
-					});
-			});
+			return getRect(`#${this.canvasId}`, {context: this, type: this.use2dCanvas ? 'fields': 'boundingClientRect'}).then(res => {
+				if(res) {
+					let dpr = devicePixelRatio
+					let {width, height, node} = res
+					let canvas;
+					this.width = width = width || 300;
+					this.height = height = height || 300;
+					if(node) {
+						const ctx = node.getContext('2d');
+						canvas = new Canvas(ctx, this, true, node);
+						this.canvasNode = node
+					} else {
+						// #ifdef MP-TOUTIAO
+						dpr = !this.isPC ? devicePixelRatio : 1// 1.25
+						// #endif
+						// #ifndef MP-ALIPAY || MP-TOUTIAO
+						dpr = this.isPC ? devicePixelRatio : 1
+						// #endif
+						// #ifdef MP-ALIPAY || MP-LARK
+						dpr = devicePixelRatio
+						// #endif
+						this.rect = res
+						this.nodeWidth = width * dpr;
+						this.nodeHeight = height * dpr;
+						const ctx = uni.createCanvasContext(this.canvasId, this);
+						canvas =  new Canvas(ctx, this, false);
+					}
+					return { canvas, width, height, devicePixelRatio: dpr, node };
+				} else {
+					return {}
+				}
+			})
 			// #endif
 		},
 		// #ifndef APP-NVUE
@@ -487,6 +412,13 @@ export default {
 						dispatch.call(handler, 'mouseup', {x: 999999999,y: 999999999});
 					},50)
 				}
+			}
+		},
+		// #endif
+		// #ifdef H5
+		mousewheel(e){
+			if(this.chart) {
+				dispatch.call(this.chart.getZr().handler, 'mousewheel', this.getTouch(e))
 			}
 		}
 		// #endif

@@ -38,17 +38,19 @@ export default {
 ```
 
 ```js
-// 如果你使用插件内提供的echarts.min
-// 也可以自行去官网下载自定义覆盖
-// 这种方式仅限于vue2
+// 方式一：自定义包
+// 使用插件内提供的echarts.min
+// 或在官网自定义包：https://echarts.apache.org/zh/builder.html
+// 注意 插件内的包是umd格式的，如果你是vue3请使用esm格式的包 https://github.com/apache/echarts/tree/master/dist
 import * as echarts from '@/uni_modules/lime-echart/static/echarts.min'
-//---or----------------------------------
 
-// 如果你使用 npm 安装了 echarts --------- 使用以下方式
-// 引入全量包
+
+// 方式二：全量包
+// 如果你使用 npm 安装了 echarts
 import * as echarts from 'echarts'
-//---or----------------------------------
 
+
+// 方式三：按需引入
 // 按需引入 开始
 import * as echarts from 'echarts/core';
 import {LineChart, BarChart} from 'echarts/charts';
@@ -58,7 +60,7 @@ import {LabelLayout,UniversalTransition} from 'echarts/features';
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 是必须的一步
 import {CanvasRenderer} from 'echarts/renderers';
 
-// 注册必须的组件
+// 按需引入 注册必须的组件
 echarts.use([
 	LegendComponent,
 	TitleComponent,
@@ -172,17 +174,17 @@ export default {
 		// opts = { // 可选
 		//	locale?: string  // 从 `5.0.0` 开始支持
 		// }
-		// chart => {} ， callback 必填，返回图表实例
+		// chart => {} ， callback 返回图表实例
 		this.$refs.chart.init(echarts, chart => {
 			chart.setOption(this.option);
 		});
 	},
 	// 2、或者使用组件的finished事件里调用
 	methods: {
-		init() {
-			this.$refs.chart.init(echarts, chart => {
-				chart.setOption(this.option);
-			});
+		async init() {
+			// chart 图表实例不能存在data里
+			const chart = await this.$refs.chart.init(echarts);
+			chart.setOption(this.option)
 		}
 	}
 }
@@ -240,6 +242,5 @@ this.$refs.chart.resize({width: 375, height: 375})
 
 ## 打赏
 如果你觉得本插件，解决了你的问题，赠人玫瑰，手留余香。  
-
-![输入图片说明](https://static-6d65bd90-8508-4d6c-abbc-a4ef5c8e49e7.bspapp.com/image/222521_bb543f96_518581.jpeg "微信图片编辑_20201122220352.jpg")
-![输入图片说明](https://static-6d65bd90-8508-4d6c-abbc-a4ef5c8e49e7.bspapp.com/image/wxplay.jpg "wxplay.jpg")
+![](https://testingcf.jsdelivr.net/gh/liangei/image@1.9/alipay.png)
+![](https://testingcf.jsdelivr.net/gh/liangei/image@1.9/wpay.png)

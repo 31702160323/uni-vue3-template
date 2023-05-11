@@ -23,13 +23,39 @@ export function compareVersion(v1, v2) {
 	return 0
 }
 
+function gte(version) {
+	// 截止 2023-03-22 mac pc小程序不支持 canvas 2d
+	let { SDKVersion, platform } = uni.getSystemInfoSync();
+	// #ifdef MP-ALIPAY
+	SDKVersion = my.SDKVersion
+	// #endif
+	// #ifdef MP-WEIXIN
+	return platform !== 'mac' && compareVersion(SDKVersion, version) >= 0;
+	// #endif
+	return compareVersion(SDKVersion, version) >= 0;
+}
+
+
+export function canIUseCanvas2d() {
+	// #ifdef MP-WEIXIN
+	return gte('2.9.0');
+	// #endif
+	// #ifdef MP-ALIPAY
+	return gte('2.7.0');
+	// #endif
+	// #ifdef MP-TOUTIAO
+	return gte('1.78.0');
+	// #endif
+	return false
+}
+
 export function wrapTouch(event) {
-  for (let i = 0; i < event.touches.length; ++i) {
-    const touch = event.touches[i];
-    touch.offsetX = touch.x;
-    touch.offsetY = touch.y;
-  }
-  return event;
+	for (let i = 0; i < event.touches.length; ++i) {
+		const touch = event.touches[i];
+		touch.offsetX = touch.x;
+		touch.offsetY = touch.y;
+	}
+	return event;
 }
 export const devicePixelRatio = wx.getSystemInfoSync().pixelRatio
 // #endif
@@ -44,12 +70,12 @@ export function base64ToPath(base64) {
 			}
 			const time = new Date().getTime();
 			const filePath = `_doc/uniapp_temp/${time}.${format}`
-			
-			bitmap.save(filePath, {}, 
+
+			bitmap.save(filePath, {},
 				() => {
 					bitmap.clear()
 					resolve(filePath)
-				}, 
+				},
 				(error) => {
 					bitmap.clear()
 					console.error(`${JSON.stringify(error)}`)
@@ -69,6 +95,31 @@ export function sleep(time) {
 	return new Promise((resolve) => {
 		setTimeout(() => {
 			resolve(true)
-		},time)
+		}, time)
 	})
 }
+
+
+export function getRect(selector, options = {}) {
+	const typeDefault = 'boundingClientRect'
+	const { context, type = typeDefault} = options
+	return new Promise((resolve, reject) => {
+		const dom = uni.createSelectorQuery().in(context).select(selector);
+		const result = (rect) => {
+			if(rect) {
+				 resolve(rect)
+			} else {
+				reject()
+			}
+		}
+		if(type == typeDefault) {
+			dom[type](result).exec()
+		} else {
+			dom[type]({
+				node: true,
+				size: true,
+				rect: true
+			}, result).exec()
+		}
+	});
+};

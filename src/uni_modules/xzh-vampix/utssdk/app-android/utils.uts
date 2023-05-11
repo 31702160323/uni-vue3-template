@@ -1,0 +1,24 @@
+import { UTSAndroid } from "io.dcloud.uts";
+import Thread from 'java.lang.Thread'
+import Runnable from 'java.lang.Runnable';
+
+export type ThreadCallback = () => void
+export class ThreadUtils extends Runnable {
+	static runOnThread(callback: ThreadCallback) {
+		new Thread(new ThreadUtils(callback)).start();
+	}
+	
+	static runOnUiThread(callback: ThreadCallback) {
+		UTSAndroid.getUniActivity()!.runOnUiThread(new ThreadUtils(callback))
+	}
+	
+	private callback: ThreadCallback
+	private constructor(callback: ThreadCallback) {
+		super()
+		this.callback = callback
+	}
+	
+	override run():void {
+		this.callback()
+	}
+}
