@@ -1,0 +1,67 @@
+// import UIKit
+
+// class IMYAppGrayStyleCoverView: UIView {
+//     static var allCoverViews = NSHashTable<UIView>.weakObjects()
+    
+//     static func show(in maskerView: UIView) {
+//         if #available(iOS 13.0, *) {
+//             // iOS13 之前系统不支持
+//             return
+//         }
+        
+//         // 遍历是否已添加 gray cover view
+//         for subview in maskerView.subviews {
+//             if subview is IMYAppGrayStyleCoverView {
+//                 return
+//             }
+//         }
+        
+//         let coverView = IMYAppGrayStyleCoverView(frame: maskerView.bounds)
+//         coverView.isUserInteractionEnabled = false
+//         coverView.backgroundColor = .lightGray
+//         coverView.layer.compositingFilter = "saturationBlendMode"
+//         coverView.layer.zPosition = .greatestFiniteMagnitude
+//         maskerView.addSubview(coverView)
+        
+//         allCoverViews.add(coverView)
+//     }
+// }
+
+// class IMYAppGrayStyle {
+//     static func open() {
+//         assert(Thread.isMainThread, "必须在主线程调用!")
+//         var windows = Set<UIWindow>()
+//         windows.formUnion(UIApplication.shared.windows)
+        
+//         if #available(iOS 13.0, *) {
+//             for scene in UIApplication.shared.connectedScenes {
+//                 if let windowScene = scene as? UIWindowScene {
+//                     windows.formUnion(windowScene.windows)
+//                 }
+//             }
+//         }
+        
+//         // 遍历所有window，给它们加上蒙版
+//         for window in windows where !NSStringFromClass(type(of: window)).contains("UIText") {
+//             IMYAppGrayStyleCoverView.show(in: window)
+//         }
+//     }
+    
+//     static func close() {
+//         assert(Thread.isMainThread, "必须在主线程调用!")
+        
+//         for coverView in IMYAppGrayStyleCoverView.allCoverViews.allObjects {
+//             coverView.removeFromSuperview()
+//         }
+//     }
+    
+//     static func addTo(view: UIView) {
+//         IMYAppGrayStyleCoverView.show(in: view)
+//     }
+    
+//     static func removeFrom(view: UIView) {
+//         for subview in view.subviews where subview is IMYAppGrayStyleCoverView {
+//             subview.removeFromSuperview()
+//         }
+//     }
+// }

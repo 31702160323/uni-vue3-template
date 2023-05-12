@@ -1,0 +1,8 @@
+export default function setWindowSaturation(sat = 1) {
+	const root = document.documentElement;
+	root.style['filter'] = `grayscale(${sat * 100}%)`;
+	root.style['webkitFilter'] = `grayscale(${sat * 100}%)`;
+	root.style['MozFilter'] = `grayscale(${sat * 100}%)`;
+	root.style['OFilter'] = `grayscale(${sat * 100}%)`;
+	root.style['msFilter'] = `grayscale(${sat * 100}%)`;
+}
