@@ -10,7 +10,23 @@
     "less.validate": false,
     "scss.validate": false,
     "stylelint.enable": true,
-    "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "nvue"],
+    "stylelint.validate": ["css", "less", "postcss", "scss", "vue"],
+
+    "prettier.trailingComma": "none",
+    "prettier.printWidth": 100,
+    "prettier.tabWidth": 4,
+    "prettier.semi": true,
+    "prettier.singleQuote": true,
+    "prettier.endOfLine": "auto",
+
+    "[vue]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+        "tsconfig.json": "tsconfig.*.json, .eslintignore, .eslintrc.js, windi.config.js, .gitignore, *.ts, *.html, .prettierrc, .stylelintignore, postcss.config.js, stylelint.config.js, package.json, package-lock.json, yarn.lock, pnpm-lock.yaml, README.md"
+    },
 
     // 在使用搜索功能时，将这些文件夹/文件排除在外
     "search.exclude": {
@@ -30,13 +46,11 @@
         "**/*.js": {
             "when": "$(basename).ts" //ts编译后生成的js文件将不会显示在工作空中
         },
-        "**/node_modules": false
+        "**/node_modules": true
     },
-
     "files.associations": {
-        "*.nvue": "vue"
+        "pages.json": "jsonc",
+        "manifest.json": "jsonc"
     },
-    "vetur.validation.script": false,
-    "vetur.validation.style": false,
-    "vetur.validation.template": false
+    "vue.codeActions.enabled": false
 }

@@ -1,37 +1,46 @@
 {
     "pages": [
+        // {
+        //     "path": "pages/index/index",
+        //     "style": {
+        //         "navigationBarTitleText": "uni-app"
+        //     }
+        // },
+        // {
+        //     "path": "pages/echarts/echarts",
+        //     "style": {
+        //         "navigationBarTitleText": "echarts"
+        //     }
+        // }
+        // {
+        //     "path": "pages/resize/resize",
+        //     "style": {
+        //         "navigationBarTitleText": "resize"
+        //     }
+        // },
+        // /* #ifdef APP-PLUS */
+        // {
+        //     "path": "pages/netspeed/netspeed",
+        //     "style": {
+        //         "navigationBarTitleText": "netspeed"
+        //     }
+        // },
+        // {
+        //     "path": "pages/floatView/floatView",
+        //     "style": {
+        //         "navigationBarTitleText": "floatView"
+        //     }
+        // }
+        // /* #endif */
         {
-            "path": "pages/index/index",
-            "style": {
-                "navigationBarTitleText": "uni-app"
+            "path" : "pages/canvas/canvas",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
             }
-        },
-        {
-            "path": "pages/echarts/echarts",
-            "style": {
-                "navigationBarTitleText": "echarts"
-            }
-        },
-        {
-            "path": "pages/resize/resize",
-            "style": {
-                "navigationBarTitleText": "resize"
-            }
-        },
-        /* #ifdef APP-PLUS */
-        {
-            "path": "pages/netspeed/netspeed",
-            "style": {
-                "navigationBarTitleText": "netspeed"
-            }
-        },
-        {
-            "path": "pages/floatView/floatView",
-            "style": {
-                "navigationBarTitleText": "floatView"
-            }
+            
         }
-        /* #endif */
     ],
     "globalStyle": {
         "navigationBarTextStyle": "black",

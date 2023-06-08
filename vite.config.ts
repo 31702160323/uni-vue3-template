@@ -38,15 +38,19 @@ export default defineConfig(({ command, mode }) => {
                 '@': resolve(__dirname, 'src')
             }
         },
+        esbuild: {
+            // 生产环境清除console
+            drop: mode === 'production' ? ['console', 'debugger'] : []
+        },
         build: {
-            minify: 'terser',
-            terserOptions: {
-                compress: {
-                    // 生产环境清除console
-                    drop_console: mode === 'production',
-                    drop_debugger: mode === 'production'
-                }
-            }
+            minify: mode === 'production' ? 'esbuild' : false
+            // minify: mode === 'production' ? 'terser' : false,
+            // terserOptions: {
+            //     compress: {
+            //         drop_console: mode === 'production',
+            //         drop_debugger: mode === 'production'
+            //     }
+            // }
         }
     };
 });
